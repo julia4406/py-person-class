@@ -8,22 +8,13 @@ class Person:
 
 
 def create_person_list(people: list) -> list:
-    persons = []
+    persons = [Person(name=human["name"],
+                      age=human["age"]) for human in people]
+
     for human in people:
-        person = Person(name=human["name"], age=human["age"])
-
-        # set attributes "husband" and "wife" as string-value
+        person = Person.people[human["name"]]
         if human.get("wife"):
-            person.wife = human["wife"]
-        if human.get("husband"):
-            person.husband = human.get("husband")
-        persons.append(person)
-
-    for person in persons:
-        # set link on wife(husband) object
-        if hasattr(person, "wife"):
-            person.wife = person.people.get(person.wife)
-        elif hasattr(person, "husband"):
-            person.husband = person.people.get(person.husband)
-
+            person.wife = Person.people[human["wife"]]
+        elif human.get("husband"):
+            person.husband = Person.people[human["husband"]]
     return persons
